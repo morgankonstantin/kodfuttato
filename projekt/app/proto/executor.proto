@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package executor.v1;
+
+option go_package = "code-executor/executorpb;executorpb";
+
+// CodeExecutor Python kódot futtat, és visszaadja a futás eredményét.
+service CodeExecutor {
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+}
+
+message ExecuteRequest {
+  // A futtatandó Python forráskód.
+  string code = 1;
+}
+
+message ExecuteResponse {
+  string stdout = 1;
+  string stderr = 2;
+  // A python3 folyamat kilépési kódja; időtúllépésnél -1.
+  int32 exit_code = 3;
+  // A Python futás ideje ezredmásodpercben.
+  int64 duration_ms = 4;
+  // A választ adó szolgáltatás verziója (build közben kerül be).
+  string version = 5;
+}
